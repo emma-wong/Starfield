@@ -1,11 +1,13 @@
-NormalParticle [] stars;
+Particle [] stars;
+
 //your code here
-void setup()
+public void setup()
 {
 	//your code here
 	size(500, 500);
-	stars = new NormalParticle[500];
+	stars = new Particle[300];
 	for(int i = 0; i<stars.length; i++) {
+		stars[0] = new OddballParticle();
 		stars[i] = new NormalParticle();
 		//background(0,0,0);
 	}
@@ -17,7 +19,13 @@ void draw()
 	for(int i=0; i < stars.length; i++) {
 		stars[i].show();
 		stars[i].move();		
-	}	
+	}
+}
+interface Particle
+{
+	//your code here
+	public void move();
+	public void show();
 }
 class NormalParticle implements Particle
 {
@@ -36,12 +44,20 @@ class NormalParticle implements Particle
 		colorR = (int)(Math.random()*255);
 		colorG = (int)(Math.random()*255);
 		colorB = (int)(Math.random()*255);
-		speed = (Math.random()*4);
+		speed = (Math.random()*3);
 		angle = (float)(Math.random()*10);
 	}
 	public void move() {
 		myX = (float)((cos(angle)*speed)+ myX);
 		myY = (float)((sin(angle)*speed)+ myY);
+		if (myX <= 0 || myX >= 500) {
+			myX = 250;
+			myY = 250;
+		}
+		if (myY <= 0 || myY >= 500) {
+			myX = 250;
+			myY = 250;
+		}
 	}
 	public void show() {
 		//noStroke();
@@ -49,12 +65,7 @@ class NormalParticle implements Particle
 		ellipse(myX, myY,6,6);
 	}
 }
-interface Particle
-{
-	//your code here
-	public void move();
-	public void show();
-}
+
 class OddballParticle implements Particle//uses an interface
 {
 	float myX;
@@ -64,18 +75,68 @@ class OddballParticle implements Particle//uses an interface
 	int colorB;
 	double speed;
 	float angle;
+	boolean myMoveV;
+	boolean myMoveH;
+	OddballParticle() {
+		myX = 250;
+		myY = 350;
+		myMoveV = true;
+		myMoveH = true;
+	}
 	public void move() {
-		myX = 300;//(float)((cos(angle)*speed)+ myX);
-		myY = 300;//(float)((sin(angle)*speed)+ myY);
+		if (myMoveV == true) {
+			myY=myY+3;			
+		}
+		if (myMoveH == true) {
+			myX++;
+		}
+		if (myMoveV == false) {
+			myY--;
+		}
+		if (myMoveH == false) {
+			myX--;
+		}
+		if (myX <= 4) {
+			myMoveH = true;
+		}
+		if (myY <= 4) {
+			myMoveV = true;
+		}	
+		if (myX >=496) {
+			myMoveH = false;
+		}
+		if (myY >=496) {
+			myMoveV = false;
+
+		} 
 	}
 	public void show() {
 		//noStroke();
-		fill(colorR, colorG, colorB);
-		ellipse(myX, myY,40,40);
+		fill(255, 255, 255);
+		ellipse(myX, myY,15,15);
 	}	
-
 }
-class JumboParticle //uses inheritance
+
+class JumboParticle implements Particle//uses inheritance
 {
 	//your code here
+	float myX;
+	float myY;
+	int colorR;
+	int colorG;
+	int colorB;
+	double speed;
+	float angle;
+	JumboParticle() {
+		myX = 250;
+		myY = 350;
+	}
+	public void move() {}
+	public void show() {
+		//noStroke();
+		fill(255, 255, 255);
+		ellipse(myX, myY,50,50);
+	}
 }
+
+
