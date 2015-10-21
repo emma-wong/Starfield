@@ -8,6 +8,7 @@ public void setup()
 	stars = new Particle[300];
 	for(int i = 0; i<stars.length; i++) {
 		stars[0] = new OddballParticle();
+		stars[1] = new JumboParticle();
 		stars[i] = new NormalParticle();
 		//background(0,0,0);
 	}
@@ -52,7 +53,7 @@ class NormalParticle implements Particle
 		myY = (float)((sin(angle)*speed)+ myY);
 		if (myX <= 0 || myX >= 500) {
 			myX = 250;
-			myY = 250;
+			myY = 250;	
 		}
 		if (myY <= 0 || myY >= 500) {
 			myX = 250;
@@ -85,7 +86,7 @@ class OddballParticle implements Particle//uses an interface
 	}
 	public void move() {
 		if (myMoveV == true) {
-			myY=myY+3;			
+			myY=myY+1.5;			
 		}
 		if (myMoveH == true) {
 			myX++;
@@ -127,15 +128,40 @@ class JumboParticle implements Particle//uses inheritance
 	int colorB;
 	double speed;
 	float angle;
+	
 	JumboParticle() {
 		myX = 250;
-		myY = 350;
+		myY = 250;
+		colorR = (int)(Math.random()*255);
+		colorG = (int)(Math.random()*255);
+		colorB = (int)(Math.random()*255);
+		speed = (Math.random()*3);
+		angle = (float)(Math.random()*10);
 	}
-	public void move() {}
+	public void move() {
+		myX = (float)((cos(angle)*speed)+ myX);
+		myY = (float)((sin(angle)*speed)+ myY);
+		if (myX <= -50 || myX >= 550) {
+			myX = 250;
+			myY = 250;
+			angle = (float)(Math.random()*10);
+			colorR = (int)(Math.random()*255);
+			colorG = (int)(Math.random()*255);
+			colorB = (int)(Math.random()*255);			
+		}
+		if (myY <= -50 || myY >= 550) {
+			myX = 250;
+			myY = 250;
+			angle = (float)(Math.random()*10);	
+			colorR = (int)(Math.random()*255);
+			colorG = (int)(Math.random()*255);
+			colorB = (int)(Math.random()*255);	
+		}
+	}
 	public void show() {
 		//noStroke();
-		fill(255, 255, 255);
-		ellipse(myX, myY,50,50);
+		fill(colorR, colorG, colorB);
+		ellipse(myX, myY,36,36);
 	}
 }
 
